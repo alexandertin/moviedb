@@ -13,7 +13,7 @@ class BoxofficeItem(scrapy.Item):
 	# name = scrapy.Field()
 	
 	movie_title = scrapy.Field()
-	# domestic_box = scrapy.Field()
+	domestic_box = scrapy.Field()
 	international_box = scrapy.Field()
 	worldwide_box = scrapy.Field()
 	# production_budget = scrapy.Field()
