@@ -27,16 +27,28 @@ class BoxOfficeSpider(Spider):
 
 	def parse_results_page(self, response):
 
-		print('enter parse_results_page')
 		#This function parses the result page of Top Movies Worldwide Box Office in each year.
 		#Specifying the xpath for the href of each individual movie from the table
+		
+		#Extracting all the individual movie URLs:
 		movie_urls = response.xpath('//*[@id="page_filling_chart"]/center/table/tbody/tr/td//@href').extract()
 
 
-		####include rank? (using meta)
-		# rank = response.xpath('//*[@id="page_filling_chart"]/center/table/tbody/tr//td[@class="data"]/text()').extract()
-		
-		#convert xpath of movie_urls to actual web address
+		####Troubleshooting - movie 27, 32, 47, 50, 63, 67, 69, 75, 77, 80, 90, 95
+		# tblesht = [27, 32, 47, 50, 63, 67, 69, 75, 77, 80, 90, 95]
+		# tblelist = []
+		# movie_urls = 
+		# for i in tblesht:
+
+
+		# movie_urls = [f'response.xpath('//*[@id="page_filling_chart"]/center/table/tbody/tr/td//@href')[{i}].extract()' for i in tblesht]
+		# print('='*55)
+		# print(movie_urls)
+		# print('='*55)
+
+		#####
+
+		#Convert Xpath of individual movie_urls to actual web address
 		movie_urls = [f'https://www.the-numbers.com/{url}' for url in movie_urls]
 
 
@@ -54,12 +66,37 @@ class BoxOfficeSpider(Spider):
 
 		for movie in movie_info:
 
-			#Parse for movie title
-			movie_title = movie_info.xpath('.//div/h1/text()').extract_first()
-			print('='*55)
-			print(movie_title)
-			print('='*55)
+			movie_title = 'DNE'
+			domestic_box = 'DNE'
+			international_box = 'DNE'
+			worldwide_box = 'DNE'
+			production_budget = 'DNE'
+			domestic_release = 'DNE'
+			MPAA_rating = 'DNE'
+			running_time = 'DNE'
+			source = 'DNE'
+			genre = 'DNE'
+			production_method = 'DNE'
+			creative_type = 'DNE'
+			production_country = 'DNE'
+			language = 'DNE'
+			# alltime_rank = 'DNE'
+			# year_rank = 'DNE'
 
+			if movie_info.xpath('div[@itemtype="https://schema.org/Movie"]') != []:
+				#Parse for movie title
+				movie_title = movie_info.xpath('.//div/h1/text()').extract_first()
+				print('='*55)
+				print(movie_title)
+				print('='*55)
+
+			else:
+				#Parse for movie titles if different web format
+				print("*"*55)
+				print('This is one of the exceptions')
+				print("*"*55)
+				print(movie_info.xpath('.//h1/text()').extract_first())
+				movie_title = movie_info.xpath('.//h1/text()').extract_first()
 
 			# try:
 						
@@ -102,6 +139,7 @@ class BoxOfficeSpider(Spider):
 				
 
 				# except
+
 			#If no production budget is given on the website, input as "N/A"
 			else:
 				production_budget = 'N/A'
@@ -112,8 +150,7 @@ class BoxOfficeSpider(Spider):
 			# Xpath for "Movie Details" table: response.xpath('.//div[@id="summary"]/table[2]/tr//text()').extract()
 			#
 			moviedetails_table = movie_info.xpath('.//*[@id="summary"]/table[2]//tr')
-			print('movie details size ' + str(len(moviedetails_table)))
-
+			
 			#Parsing within the "Movie Details" table
 			#Loop through each Selector in the Movie Details table to find specific headers to extract values
 			for moviedetail_tr in moviedetails_table:
@@ -188,13 +225,22 @@ class BoxOfficeSpider(Spider):
 					print('='*55)
 
 
-				# #Parse for the Language (may have more than one)
+				# Parse for the Language (may have more than one)
 				if detail_heading == 'Languages:':
 					language = moviedetail_tr.xpath('./td/a//text()').extract()
 					print('='*55)
 					print('the language is ' + str(language))
 					print('='*55)
 
+
+				# Parse for All Time Ranking
+				# if detail_heading == '':
+				# 	alltime_rank = 
+
+
+				# Parse for Year Ranking
+				# if detail_heading == :
+				# 	year_rank = 
 
 				#If there are any of the fields where the information is not provided:
 				# else:
@@ -220,6 +266,8 @@ class BoxOfficeSpider(Spider):
 			item['creative_type'] = creative_type
 			item['production_country'] = production_country
 			item['language'] = language
+			# item['alltime_rank'] = alltime_rank
+			# item['year_rank'] = year_rank
 
 			yield item
 
