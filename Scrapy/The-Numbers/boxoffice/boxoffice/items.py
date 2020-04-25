@@ -26,7 +26,7 @@ class BoxofficeItem(scrapy.Item):
 	creative_type = scrapy.Field()
 	production_country = scrapy.Field()
 	language = scrapy.Field()
-	alltime_rank = scrapy.Field()
-	year_rank = scrapy.Field()
+	# alltime_rank = scrapy.Field()
+	# year_rank = scrapy.Field()
 
 
