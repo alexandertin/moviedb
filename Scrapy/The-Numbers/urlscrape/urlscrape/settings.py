@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Scrapy settings for ratings project
+# Scrapy settings for urlscrape project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -9,14 +9,14 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'ratings'
+BOT_NAME = 'urlscrape'
 
-SPIDER_MODULES = ['ratings.spiders']
-NEWSPIDER_MODULE = 'ratings.spiders'
+SPIDER_MODULES = ['urlscrape.spiders']
+NEWSPIDER_MODULE = 'urlscrape.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'ratings (+http://www.yourdomain.com)'
+USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
@@ -47,13 +47,13 @@ DOWNLOAD_DELAY = 2
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'ratings.middlewares.RatingsSpiderMiddleware': 543,
+#    'urlscrape.middlewares.UrlscrapeSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'ratings.middlewares.RatingsDownloaderMiddleware': 543,
+#    'urlscrape.middlewares.UrlscrapeDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -65,7 +65,7 @@ DOWNLOAD_DELAY = 2
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'ratings.pipelines.RatingsPipeline': 300,
+   'urlscrape.pipelines.UrlscrapePipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

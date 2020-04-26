@@ -9,6 +9,13 @@ import scrapy
 
 
 class RatingsItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+	# define the fields for your item here like:
+	# name = scrapy.Field()
+	pass
+
+	movie_name = scrapy.Field()
+	critic_score = scrapy.Field()
+	count_critic_review = scrapy.Field()
+	certified_status = scrapy.Field()
+	user_score = scrapy.Field()
+	count_user_review = scrapy.Field()

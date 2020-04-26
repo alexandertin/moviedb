@@ -9,8 +9,6 @@ import scrapy
 
 
 class BoxofficeItem(scrapy.Item):
-	# define the fields for your item here like:
-	# name = scrapy.Field()
 	
 	movie_title = scrapy.Field()
 	domestic_box = scrapy.Field()
@@ -26,7 +24,5 @@ class BoxofficeItem(scrapy.Item):
 	creative_type = scrapy.Field()
 	production_country = scrapy.Field()
 	language = scrapy.Field()
-	# alltime_rank = scrapy.Field()
-	# year_rank = scrapy.Field()
 
 
