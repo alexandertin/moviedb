@@ -19,19 +19,19 @@ class RottenTomatesSpider(Spider):
 	# scrapy crawl rotten_spider -a filename=text.txt
 		# page_urls = [f'https://www.rottentomatoes.com/m{url}' for url in TO_BE_DEFINED]
 	
-		url_list = ['https://www.rottentomatoes.com/m/fake_movie','https://www.rottentomatoes.com/m/fake_movie2','https://www.rottentomatoes.com/m/Indiana_Jones_and_the_Last_Crusade']
+		# url_list = ['https://www.rottentomatoes.com/m/fake_movie','https://www.rottentomatoes.com/m/fake_movie2','https://www.rottentomatoes.com/m/Indiana_Jones_and_the_Last_Crusade']
 		# url_list = ['https://www.rottentomatoes.com/']
+		with open('urllist.txt') as f:
+			url_list = f.readlines()
 
-		
+			for url in url_list:
+				print('+'*55)
+				print(url)
+				print('+'*55)
 
-		for url in url_list:
-			print('+'*55)
-			print(url)
-			print('+'*55)
-
-			# try:
-			# 	print('hello')
-			yield Request(url=url, callback=self.parse_individual_page)
+				# try:
+				# 	print('hello')
+				yield Request(url=url, callback=self.parse_individual_page)
 
 			# except:
 			# 	print(f'Oops, {url} is an invalid page name, filtered out by spider')
