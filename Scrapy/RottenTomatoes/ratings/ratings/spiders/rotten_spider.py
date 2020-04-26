@@ -4,24 +4,49 @@ from ratings.items import RatingsItem
 
 class RottenTomatesSpider(Spider):
 	name = 'rotten_spider'
-	allowed_domains = ['wwww.rottentomatoes.com']
-	start_urls = ['https://www.rottentomatoes.com/m']
+	allowed_domains = ['rottentomatoes.com']
+	start_urls = ['https://www.rottentomatoes.com/']
+
+	# scrapy crawl myspider -a filename=text.txt
+	# def __init__(self, filename=None):
+	# 	if filename:
+	# 		with open(filename, 'r') as f:
+	# 			self.start_urls = f.readlines()
 
 
 	def parse(self, response):
 
+	# scrapy crawl rotten_spider -a filename=text.txt
+		# page_urls = [f'https://www.rottentomatoes.com/m{url}' for url in TO_BE_DEFINED]
+	
+		url_list = ['https://www.rottentomatoes.com/m/fake_movie','https://www.rottentomatoes.com/m/fake_movie2','https://www.rottentomatoes.com/m/Indiana_Jones_and_the_Last_Crusade']
+		# url_list = ['https://www.rottentomatoes.com/']
 
-		page_urls = [f'https://www.rottentomatoes.com/m{i}' for i in TO_BE_DEFINED]
+		
 
+		for url in url_list:
+			print('+'*55)
+			print(url)
+			print('+'*55)
 
-		for url in page_urls:
-			yield Request(url=url, callback=self.parse_movie_page)
+			# try:
+			# 	print('hello')
+			yield Request(url=url, callback=self.parse_individual_page)
 
-	def parse_movie_page(self,response):
+			# except:
+			# 	print(f'Oops, {url} is an invalid page name, filtered out by spider')
+
+	def parse_individual_page(self, response):
+
+		print('*'*55)
+		print('parse individual movie page')
+		print('*'*55)
 
 		# Selector containing all the necessary information (Top Level)
 		movie_ratings = response.xpath('//*[@id="topSection"]/div[2]/div[1]')
 
+		print(movie_ratings)
+		print("="*55)
 		# //*[@id="topSection"]/div[2]
 		movie_name = 'DNE'
 		critic_score = 'DNE'
@@ -42,6 +67,7 @@ class RottenTomatesSpider(Spider):
 
 		# Extract the overall critic score
 		critic_score = consensus_box.xpath('.//*[@id="tomato_meter_link"]/span[2]/text()').extract_first()
+		
 		try:
 			critic_score = str.strip(consensus_box.xpath('.//*[@id="tomato_meter_link"]/span[2]/text()').extract_first())
 		except: 
@@ -53,6 +79,7 @@ class RottenTomatesSpider(Spider):
 
 		#Extract the number of critic reviews
 		count_critic_review = consensus_box.xpath('./div[1]/div/small/text()').extract_first()
+		
 		try:
 			count_critic_review = str.strip(consensus_box.xpath('./div[1]/div/small/text()').extract_first())
 		except:
@@ -65,16 +92,16 @@ class RottenTomatesSpider(Spider):
 		certification_tag = consensus_box.xpath('.//*[@id="tomato_meter_link"]/span[1]/@class').extract()
 		
 		#If it is a "certified fresh", it will show in the tag. This tests if the class tag "certified fresh" is true
-		if certification_tag = ['mop-ratings-wrap__icon meter-tomato icon big medium-xs certified_fresh']:
+		if certification_tag == ['mop-ratings-wrap__icon meter-tomato icon big medium-xs certified_fresh']:
 			certified_status = 'Certified Fresh'
 			print('+'*55)
-			print(certified_boolean)
+			print(certified_status)
 			print('+'*55)
 		#If it is a "fresh", it will show in the tag. This tests if the class tag "fresh" is true
-		elif certification_tag = ['mop-ratings-wrap__icon meter-tomato icon big medium-xs fresh']:
+		elif certification_tag == ['mop-ratings-wrap__icon meter-tomato icon big medium-xs fresh']:
 			certified_status = 'Fresh'
 		#If it is not "certified fresh"or "fresh", should be rotten. This tests if the class tag rotten is true
-		elif certification_tag = ['mop-ratings-wrap__icon meter-tomato icon big medium-xs rotten']:
+		elif certification_tag == ['mop-ratings-wrap__icon meter-tomato icon big medium-xs rotten']:
 			certified_status = 'Rotten'
 		else:
 			print('*'*55)
@@ -107,10 +134,3 @@ class RottenTomatesSpider(Spider):
 		item['count_user_review'] = count_user_review
 
 		yield item
-
-
-
-
-
-
-
